@@ -7,9 +7,15 @@
     </FilesMatch>
 </IfModule>
 
-# Força HTTPS
 <IfModule mod_rewrite.c>
     RewriteEngine On
+
+    # Redireciona subdomínio diagnostico para a pasta /diagnostico caso o subdomínio aponte para a raiz
+    RewriteCond %{HTTP_HOST} ^diagnostico\.supercontribuidor\.com\.br$ [NC]
+    RewriteCond %{REQUEST_URI} !^/diagnostico/
+    RewriteRule ^(.*)$ /diagnostico/$1 [L]
+
+    # Força HTTPS
     RewriteCond %{HTTPS} off
     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 </IfModule>
