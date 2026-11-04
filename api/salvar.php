@@ -83,6 +83,8 @@ $adminEmails = [
     "andre.caliari@gmail.com"
 ];
 
+$mailResults = [];
+
 // Envia notificação por e-mail se o diagnóstico foi concluído
 if (!empty($record['result']) && function_exists('mail')) {
     $nome = htmlspecialchars($record['lead']['nome'] ?? 'Novo Lead');
@@ -174,15 +176,23 @@ if (!empty($record['result']) && function_exists('mail')) {
     </body>
     </html>";
 
-    $host = $_SERVER['HTTP_HOST'] ?? 'supercontribuidor.com.br';
+    $senderEmail = "contato@supercontribuidor.com.br";
     $headers = "MIME-Version: 1.0\r\n" .
                "Content-type: text/html; charset=UTF-8\r\n" .
-               "From: Supercontribuidor IA <nao-responda@{$host}>\r\n" .
-               "Reply-To: {$email}\r\n";
+               "From: Supercontribuidor IA <{$senderEmail}>\r\n" .
+               "Reply-To: " . ($email ?: $senderEmail) . "\r\n" .
+               "X-Mailer: PHP/" . phpversion() . "\r\n";
 
-    // Dispara individualmente para cada destinatário
+    // Parâmetro envelope sender (-f) para alinhar com o SPF do domínio na Hostinger
+    $extraParams = "-f{$senderEmail}";
+
     foreach ($adminEmails as $destinatario) {
-        @mail($destinatario, $assunto, $corpo, $headers);
+        $sentOk = @mail($destinatario, $assunto, $corpo, $headers, $extraParams);
+        $mailResults[$destinatario] = $sentOk;
+        
+        // Registro de log para auditoria
+        $logLine = date("Y-m-d H:i:s") . " | Para: {$destinatario} | Assunto: {$assunto} | Status: " . ($sentOk ? 'SUCESSO' : 'FALHA') . "\n";
+        @file_put_contents($dataDir . '/mail_debug.log', $logLine, FILE_APPEND);
     }
 }
 
@@ -191,5 +201,6 @@ echo json_encode([
     "id" => $record['id'],
     "evento" => $record['evento'],
     "timestamp" => $timestamp,
+    "mail_dispatched" => $mailResults,
     "mensagem" => "Dados salvos com sucesso!"
 ], JSON_UNESCAPED_UNICODE);
