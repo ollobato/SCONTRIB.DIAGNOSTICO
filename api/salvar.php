@@ -4,11 +4,15 @@
  * Compatível com Hostinger (PHP 7.4+)
  * 
  * Funcionalidades:
- * 1. Recebe os dados em formato JSON (lead inicial ou diagnóstico completo).
- * 2. Salva em arquivo protegido data/leads.jsonl (thread-safe com LOCK_EX).
- * 3. Envia notificação por e-mail para os administradores a cada diagnóstico concluído.
- * 4. Responde em JSON com status 200/400.
+ * 1. Fuso horário ajustado para o Brasil (America/Sao_Paulo).
+ * 2. Recebe os dados em formato JSON (lead inicial, diagnóstico completo ou pedido via WhatsApp).
+ * 3. Salva em arquivo protegido data/leads.jsonl (thread-safe com LOCK_EX).
+ * 4. Envia notificação por e-mail para os administradores a cada diagnóstico ou solicitação de WhatsApp.
+ * 5. Responde em JSON com status 200/400.
  */
+
+// Define Fuso Horário de Brasília
+date_default_timezone_set('America/Sao_Paulo');
 
 header("Content-Type: application/json; charset=UTF-8");
 header("X-Content-Type-Options: nosniff");
@@ -42,16 +46,21 @@ if (!is_dir($dataDir)) {
     }
 }
 
-$timestamp = date("Y-m-d H:i:s");
+// Data e Hora de Brasília (ex: 04/11/2026 00:38:12)
+$timestampFormatado = date("d/m/Y H:i:s");
+$timestampIso = date("Y-m-d H:i:s");
 $ip = $_SERVER['REMOTE_ADDR'] ?? 'desconhecido';
 $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'desconhecido';
 
+$evento = $data['evento'] ?? ($data['result'] ? 'diagnostico_concluido' : 'lead_iniciado');
+
 $record = [
     "id" => uniqid("lead_", true),
-    "data_hora" => $timestamp,
+    "data_hora" => $timestampFormatado,
+    "data_hora_iso" => $timestampIso,
     "ip" => $ip,
     "user_agent" => $userAgent,
-    "evento" => $data['evento'] ?? ($data['result'] ? 'diagnostico_concluido' : 'lead_iniciado'),
+    "evento" => $evento,
     "lead_id" => $data['lead_id'] ?? null,
     "lead" => $data['lead'] ?? [
         "nome" => $data['nome'] ?? $data['name'] ?? null,
@@ -64,6 +73,7 @@ $record = [
     ],
     "result" => $data['result'] ?? null,
     "answers" => $data['answers'] ?? null,
+    "whatsapp_dest" => $data['whatsapp_dest'] ?? null
 ];
 
 // Salva no arquivo local leads.jsonl
@@ -84,9 +94,58 @@ $adminEmails = [
 ];
 
 $mailResults = [];
+$senderEmail = "contato@supercontribuidor.com.br";
+$extraParams = "-f{$senderEmail}";
 
-// Envia notificação por e-mail se o diagnóstico foi concluído
-if (!empty($record['result']) && function_exists('mail')) {
+// 1. Notificação especial quando o usuário solicita receber pelo WhatsApp
+if ($evento === 'solicitou_relatorio_whatsapp' && function_exists('mail')) {
+    $nome = htmlspecialchars($record['lead']['nome'] ?? 'Participante');
+    $email = htmlspecialchars($record['lead']['email'] ?? '');
+    $whatsappDest = htmlspecialchars($record['whatsapp_dest'] ?? ($record['lead']['whatsapp'] ?? ''));
+    $pontos = htmlspecialchars($record['result']['total'] ?? 'N/A');
+    $nivelNome = htmlspecialchars($record['result']['level']['name'] ?? 'N/A');
+
+    $rawPhone = preg_replace('/\D/', '', $whatsappDest);
+    if (strlen($rawPhone) >= 10 && !str_starts_with($rawPhone, '55')) {
+        $cleanPhone = '55' . $rawPhone;
+    } else {
+        $cleanPhone = $rawPhone;
+    }
+    $whatsappLink = "https://wa.me/{$cleanPhone}";
+
+    $assunto = "=?UTF-8?B?" . base64_encode("📲 PEDIDO WHATSAPP: {$nome} quer o relatório no número {$whatsappDest}") . "?=";
+    $corpo = "<!DOCTYPE html><html><body style='font-family:sans-serif;padding:20px;background:#f7fafc;color:#2d3748;'>
+        <div style='max-width:600px;margin:0 auto;background:#fff;border-radius:8px;padding:24px;border:1px solid #e2e8f0;'>
+            <div style='background:#25d366;color:#fff;padding:12px 20px;border-radius:6px;font-size:18px;font-weight:bold;margin-bottom:16px;'>
+                📲 Solicitação de Relatório por WhatsApp!
+            </div>
+            <p>O usuário <strong>{$nome}</strong> acabou de clicar para receber o relatório completo no WhatsApp.</p>
+            <table style='width:100%;margin-bottom:20px;font-size:15px;'>
+                <tr><td style='padding:6px 0;color:#718096;width:130px;'>Número Destino:</td><td><a href='{$whatsappLink}' target='_blank' style='color:#25d366;font-size:17px;font-weight:bold;text-decoration:none;'>{$whatsappDest} ↗ Abrir WhatsApp</a></td></tr>
+                <tr><td style='padding:6px 0;color:#718096;'>Nome:</td><td><strong>{$nome}</strong></td></tr>
+                <tr><td style='padding:6px 0;color:#718096;'>E-mail:</td><td>{$email}</td></tr>
+                <tr><td style='padding:6px 0;color:#718096;'>Pontuação:</td><td><strong>{$pontos}/150 ({$nivelNome})</strong></td></tr>
+                <tr><td style='padding:6px 0;color:#718096;'>Horário (Brasília):</td><td>{$timestampFormatado}</td></tr>
+            </table>
+            <div style='text-align:center;margin-top:20px;'>
+                <a href='{$whatsappLink}' style='background:#25d366;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:bold;display:inline-block;'>Chamar no WhatsApp Agora</a>
+            </div>
+        </div>
+    </body></html>";
+
+    $headers = "MIME-Version: 1.0\r\n" .
+               "Content-type: text/html; charset=UTF-8\r\n" .
+               "From: Supercontribuidor IA <{$senderEmail}>\r\n" .
+               "Reply-To: " . ($email ?: $senderEmail) . "\r\n" .
+               "X-Mailer: PHP/" . phpversion() . "\r\n";
+
+    foreach ($adminEmails as $destinatario) {
+        $sentOk = @mail($destinatario, $assunto, $corpo, $headers, $extraParams);
+        $mailResults[$destinatario] = $sentOk;
+    }
+}
+// 2. Notificação padrão de diagnóstico concluído
+elseif ($evento === 'diagnostico_concluido' && !empty($record['result']) && function_exists('mail')) {
     $nome = htmlspecialchars($record['lead']['nome'] ?? 'Novo Lead');
     $email = htmlspecialchars($record['lead']['email'] ?? '');
     $whatsapp = htmlspecialchars($record['lead']['whatsapp'] ?? '');
@@ -99,7 +158,6 @@ if (!empty($record['result']) && function_exists('mail')) {
     $nivelFaixa = htmlspecialchars($record['result']['level']['range'] ?? '');
     $nivelFoco = htmlspecialchars($record['result']['level']['focus'] ?? '');
 
-    // Limpeza de número para link direto do WhatsApp
     $rawPhone = preg_replace('/\D/', '', $whatsapp);
     if (strlen($rawPhone) >= 10 && !str_starts_with($rawPhone, '55')) {
         $cleanPhone = '55' . $rawPhone;
@@ -108,7 +166,6 @@ if (!empty($record['result']) && function_exists('mail')) {
     }
     $whatsappLink = "https://wa.me/{$cleanPhone}";
 
-    // Dimensões
     $dimensoesHtml = "";
     if (!empty($record['result']['dimensions'])) {
         $dimensoesLabels = [
@@ -142,7 +199,6 @@ if (!empty($record['result']) && function_exists('mail')) {
         </div>
 
         <div style='padding: 24px;'>
-          <!-- Destaque da Pontuação -->
           <div style='background: #edf2f7; border-radius: 8px; padding: 18px; text-align: center; margin-bottom: 24px;'>
             <span style='font-size: 12px; text-transform: uppercase; color: #718096; font-weight: bold; letter-spacing: 1px;'>Índice de Prontidão IA</span>
             <div style='font-size: 38px; font-weight: 900; color: #2b6cb0; margin: 4px 0;'>{$pontos} <span style='font-size: 18px; color: #718096;'>/ 150</span></div>
@@ -150,7 +206,6 @@ if (!empty($record['result']) && function_exists('mail')) {
             <p style='margin: 12px 0 0; font-size: 13px; color: #4a5568; line-height: 1.5;'><em>\"{$nivelFoco}\"</em></p>
           </div>
 
-          <!-- Dados do Lead -->
           <h2 style='font-size: 16px; border-bottom: 2px solid #edf2f7; padding-bottom: 8px; margin-bottom: 14px; color: #1a202c;'>👤 Informações do Lead</h2>
           <table style='width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 14px;'>
             <tr><td style='padding: 6px 0; color: #718096; width: 110px;'>Nome:</td><td><strong>{$nome}</strong></td></tr>
@@ -160,39 +215,29 @@ if (!empty($record['result']) && function_exists('mail')) {
             <tr><td style='padding: 6px 0; color: #718096;'>Desafio com IA:</td><td style='color: #4a5568;'>{$desafio}</td></tr>
           </table>
 
-          <!-- Dimensões -->
           <h2 style='font-size: 16px; border-bottom: 2px solid #edf2f7; padding-bottom: 8px; margin-bottom: 14px; color: #1a202c;'>📊 Desempenho por Dimensão</h2>
           <table style='width: 100%; border-collapse: collapse; margin-bottom: 24px;'>
             {$dimensoesHtml}
           </table>
 
-          <!-- Botão Painel -->
           <div style='text-align: center; margin-top: 28px; padding-top: 20px; border-top: 1px solid #edf2f7;'>
             <a href='https://supercontribuidor.com.br/api/ver-leads.php?token=SCONTRIB2025' style='background: #3182ce; color: #ffffff; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 14px; display: inline-block;'>Acessar Painel de Leads & Exportar CSV</a>
-            <p style='font-size: 11px; color: #a0aec0; margin-top: 10px;'>Registro gerado em {$timestamp}</p>
+            <p style='font-size: 11px; color: #a0aec0; margin-top: 10px;'>Horário de Brasília: {$timestampFormatado}</p>
           </div>
         </div>
       </div>
     </body>
     </html>";
 
-    $senderEmail = "contato@supercontribuidor.com.br";
     $headers = "MIME-Version: 1.0\r\n" .
                "Content-type: text/html; charset=UTF-8\r\n" .
                "From: Supercontribuidor IA <{$senderEmail}>\r\n" .
                "Reply-To: " . ($email ?: $senderEmail) . "\r\n" .
                "X-Mailer: PHP/" . phpversion() . "\r\n";
 
-    // Parâmetro envelope sender (-f) para alinhar com o SPF do domínio na Hostinger
-    $extraParams = "-f{$senderEmail}";
-
     foreach ($adminEmails as $destinatario) {
         $sentOk = @mail($destinatario, $assunto, $corpo, $headers, $extraParams);
         $mailResults[$destinatario] = $sentOk;
-        
-        // Registro de log para auditoria
-        $logLine = date("Y-m-d H:i:s") . " | Para: {$destinatario} | Assunto: {$assunto} | Status: " . ($sentOk ? 'SUCESSO' : 'FALHA') . "\n";
-        @file_put_contents($dataDir . '/mail_debug.log', $logLine, FILE_APPEND);
     }
 }
 
@@ -200,7 +245,7 @@ echo json_encode([
     "ok" => true,
     "id" => $record['id'],
     "evento" => $record['evento'],
-    "timestamp" => $timestamp,
+    "timestamp" => $timestampFormatado,
     "mail_dispatched" => $mailResults,
     "mensagem" => "Dados salvos com sucesso!"
 ], JSON_UNESCAPED_UNICODE);

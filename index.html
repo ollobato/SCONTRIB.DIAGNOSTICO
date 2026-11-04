@@ -1188,6 +1188,120 @@
         height: 300px;
       }
     }
+  
+    /* Módulo de Entrega por WhatsApp no Resultado */
+    .whatsapp-delivery-card {
+      background: rgba(37, 211, 102, 0.05);
+      border: 1px solid rgba(37, 211, 102, 0.35);
+      border-radius: 14px;
+      padding: 24px;
+      margin-top: 24px;
+      box-shadow: 0 0 35px rgba(37, 211, 102, 0.12);
+    }
+
+    .whatsapp-delivery-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .whatsapp-delivery-icon {
+      font-size: 38px;
+      line-height: 1;
+    }
+
+    .whatsapp-delivery-header h3 {
+      margin: 0;
+      color: #93ff4a;
+      font-size: 19px;
+      font-family: var(--font-display);
+    }
+
+    .whatsapp-delivery-header p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .whatsapp-delivery-input-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .whatsapp-delivery-input-group input {
+      flex: 1 1 240px;
+      min-height: 50px;
+      padding: 0 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      font-size: 16px;
+      font-family: var(--font-body);
+    }
+
+    .whatsapp-delivery-input-group input:focus {
+      outline: none;
+      border-color: #25d366;
+      box-shadow: 0 0 14px rgba(37, 211, 102, 0.5);
+    }
+
+    .whatsapp-delivery-input-group .button {
+      flex: 0 0 auto;
+      min-height: 50px;
+      background: linear-gradient(135deg, #25d366, #128c7e);
+      color: #040510;
+      border: none;
+      font-weight: 900;
+      cursor: pointer;
+      padding: 0 24px;
+      border-radius: 8px;
+      text-transform: uppercase;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+    }
+
+    .whatsapp-delivery-input-group .button:hover {
+      box-shadow: 0 0 25px rgba(37, 211, 102, 0.6);
+      transform: translateY(-1px);
+    }
+
+    .whatsapp-delivery-feedback {
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 8px;
+      background: rgba(37, 211, 102, 0.15);
+      border: 1px solid rgba(37, 211, 102, 0.5);
+      color: #e6ffed;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .whatsapp-delivery-feedback.hidden {
+      display: none !important;
+    }
+
+    .whatsapp-direct-btn {
+      display: inline-block;
+      margin-top: 12px;
+      background: #25d366;
+      color: #040510 !important;
+      font-weight: 900;
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-size: 14px;
+    }
+
+    .whatsapp-direct-btn:hover {
+      background: #93ff4a;
+      box-shadow: 0 0 20px rgba(147, 255, 74, 0.6);
+    }
+
   </style>
 
   <!-- Script que define as funções de gestão das imagens de forma robusta e síncrona -->
@@ -1553,9 +1667,22 @@
           </div>
         </div>
 
-        <div class="result-actions reveal">
-          <button type="button" class="button secondary" id="btn-print" onclick="window.print()">🖨️ Salvar / Imprimir Relatório PDF</button>
-          <a class="button primary" id="btn-share-whatsapp" href="#" target="_blank" rel="noopener">💬 Falar com Especialista no WhatsApp</a>
+                <!-- Módulo de Entrega de Relatório por WhatsApp -->
+        <div class="whatsapp-delivery-card reveal" id="whatsapp-delivery-section">
+          <div class="whatsapp-delivery-header">
+            <span class="whatsapp-delivery-icon">📱</span>
+            <div>
+              <h3>Receber meu relatório detalhado no WhatsApp</h3>
+              <p>Confirme ou digite seu WhatsApp abaixo para receber o detalhamento completo das suas notas e recomendações práticas no seu celular.</p>
+            </div>
+          </div>
+          <form id="whatsapp-delivery-form" class="whatsapp-delivery-form" novalidate>
+            <div class="whatsapp-delivery-input-group">
+              <input type="tel" id="whatsapp-dest-input" name="whatsapp_dest" placeholder="(00) 00000-0000" required>
+              <button type="submit" class="button primary" id="btn-submit-whatsapp-relatorio">Receber no WhatsApp</button>
+            </div>
+            <div id="whatsapp-delivery-feedback" class="whatsapp-delivery-feedback hidden"></div>
+          </form>
         </div>
 
 
@@ -1681,6 +1808,7 @@
     }
 
     let leadData = null;
+    let latestResult = null;
 
     const leadForm = document.querySelector("#lead-form");
     const diagnosticSection = document.querySelector("#diagnostico");
@@ -1840,6 +1968,12 @@
     }
 
     function renderResult(result) {
+      latestResult = result;
+      const destInput = document.querySelector("#whatsapp-dest-input");
+      if (destInput && leadData && leadData.whatsapp) {
+        destInput.value = leadData.whatsapp;
+      }
+
       document.querySelector("#result-level").textContent = `${result.level.name} (${result.level.range})`;
       document.querySelector("#result-focus").textContent = result.level.focus;
       
