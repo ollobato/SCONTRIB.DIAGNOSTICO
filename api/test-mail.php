@@ -1,9 +1,6 @@
 <?php
-/**
- * Teste de Diagnóstico de Envio de E-mail
- */
 error_reporting(E_ALL);
-ini_ini_set = ini_set('display_errors', 1);
+ini_set('display_errors', 1);
 
 header("Content-Type: application/json; charset=UTF-8");
 
