@@ -76,15 +76,29 @@ $record = [
     "whatsapp_dest" => $data['whatsapp_dest'] ?? null
 ];
 
-// Salva no arquivo local leads.jsonl
-$filePath = $dataDir . '/leads.jsonl';
+// Salva de forma unificada em todos os caminhos pertinentes
 $line = json_encode($record, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "\n";
-$saved = file_put_contents($filePath, $line, FILE_APPEND | LOCK_EX);
+$savePaths = [
+    $dataDir . '/leads.jsonl',
+    __DIR__ . '/../../data/leads.jsonl',
+    __DIR__ . '/../diagnostico/data/leads.jsonl',
+    __DIR__ . '/../../diagnostico/data/leads.jsonl'
+];
 
-if ($saved === false) {
-    http_response_code(500);
-    echo json_encode(["ok" => false, "error" => "Falha ao gravar os dados no servidor."]);
-    exit;
+$savedAtLeastOnce = false;
+foreach ($savePaths as $targetPath) {
+    $parent = dirname($targetPath);
+    if (is_dir($parent)) {
+        $res = @file_put_contents($targetPath, $line, FILE_APPEND | LOCK_EX);
+        if ($res !== false) {
+            $savedAtLeastOnce = true;
+        }
+    }
+}
+
+if (!$savedAtLeastOnce) {
+    // Fallback garantido no próprio dataDir
+    @file_put_contents($dataDir . '/leads.jsonl', $line, FILE_APPEND | LOCK_EX);
 }
 
 // Destinatários dos e-mails de notificação

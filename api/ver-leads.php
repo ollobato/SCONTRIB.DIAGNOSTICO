@@ -1,6 +1,7 @@
 <?php
 /**
  * Painel Administrativo de Leads e Diagnósticos
+ * Unificado para Subdomínio e Domínio Principal
  * Fuso horário: Brasília (America/Sao_Paulo)
  */
 
@@ -18,30 +19,46 @@ if ($tokenEnviado !== $tokenConfig) {
     exit;
 }
 
-$leadsFile = __DIR__ . '/../data/leads.jsonl';
+// Arquivos de banco de dados para unificação automática
+$potentialFiles = [
+    __DIR__ . '/../data/leads.jsonl',
+    __DIR__ . '/../../data/leads.jsonl',
+    __DIR__ . '/../diagnostico/data/leads.jsonl',
+    __DIR__ . '/../../diagnostico/data/leads.jsonl'
+];
+
 $records = [];
-if (file_exists($leadsFile)) {
-    $lines = file($leadsFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    foreach ($lines as $line) {
-        $json = json_decode($line, true);
-        if ($json) {
-            // Ajusta fuso horário de registros antigos se estiver em UTC (3 horas a mais)
-            if (isset($json['data_hora_iso'])) {
-                $dt = new DateTime($json['data_hora_iso']);
-                $json['data_hora_br'] = $dt->format('d/m/Y H:i:s');
-            } elseif (isset($json['data_hora'])) {
-                // Se estiver no formato antigo Y-m-d H:i:s (UTC), ajusta -3 horas
-                if (preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $json['data_hora'])) {
-                    $dt = new DateTime($json['data_hora'], new DateTimeZone('UTC'));
-                    $dt->setTimezone(new DateTimeZone('America/Sao_Paulo'));
-                    $json['data_hora_br'] = $dt->format('d/m/Y H:i:s');
-                } else {
-                    $json['data_hora_br'] = $json['data_hora'];
+$seenIds = [];
+
+foreach ($potentialFiles as $filePath) {
+    if (file_exists($filePath)) {
+        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+            $json = json_decode($line, true);
+            if ($json) {
+                $id = $json['id'] ?? md5($line);
+                if (isset($seenIds[$id])) {
+                    continue; // Evita duplicação caso os arquivos apontem para o mesmo diretório
                 }
-            } else {
-                $json['data_hora_br'] = '-';
+                $seenIds[$id] = true;
+
+                // Ajusta fuso horário de registros antigos se estiver em UTC (3 horas a mais)
+                if (isset($json['data_hora_iso'])) {
+                    $dt = new DateTime($json['data_hora_iso']);
+                    $json['data_hora_br'] = $dt->format('d/m/Y H:i:s');
+                } elseif (isset($json['data_hora'])) {
+                    if (preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $json['data_hora'])) {
+                        $dt = new DateTime($json['data_hora'], new DateTimeZone('UTC'));
+                        $dt->setTimezone(new DateTimeZone('America/Sao_Paulo'));
+                        $json['data_hora_br'] = $dt->format('d/m/Y H:i:s');
+                    } else {
+                        $json['data_hora_br'] = $json['data_hora'];
+                    }
+                } else {
+                    $json['data_hora_br'] = '-';
+                }
+                $records[] = $json;
             }
-            $records[] = $json;
         }
     }
 }
@@ -99,7 +116,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
 <body>
   <div class="header-bar">
     <div>
-      <h1>Painel de Leads & Diagnósticos</h1>
+      <h1>Painel Central de Leads & Diagnósticos</h1>
       <p style="color:#8f9cb5;margin:0;">Horário oficial de Brasília (America/Sao_Paulo) | Total de envios: <?= count($records) ?></p>
     </div>
     <a href="?token=<?= urlencode($tokenConfig) ?>&export=csv" class="btn">📥 Exportar para CSV</a>
