@@ -1566,9 +1566,9 @@
             <p>Em apenas 2 horas, você aprende a alinhar contexto, estruturar problemas complexos, trabalhar melhor com IA, revisar respostas com pensamento crítico e gerar entregas de maior valor.</p>
           </div>
           <div class="offer-box">
-            <span>Experiência de 2 horas</span>
+            <span>Treinamento de duas horas</span>
             <strong>10x R$ 9,70</strong>
-            <a class="button primary" href="https://pay.kiwify.com.br/iS4ACf1" target="_blank" rel="noreferrer">Reservar vaga</a>
+            <a class="button primary" id="btn-checkout-kiwify" href="https://pay.kiwify.com.br/iS4ACf1" target="_blank" rel="noopener noreferrer">Reservar vaga</a>
           </div>
         </section>
       </section>
@@ -1830,6 +1830,12 @@
       fragment.append(submit);
       diagnosticForm.append(fragment);
       
+      const kiwifyBtn = document.querySelector("#btn-checkout-kiwify") || document.querySelector(".offer-box a");
+      if (kiwifyBtn) {
+        kiwifyBtn.href = "https://pay.kiwify.com.br/iS4ACf1";
+        kiwifyBtn.target = "_blank";
+      }
+
       observeScrollElements();
     }
 
