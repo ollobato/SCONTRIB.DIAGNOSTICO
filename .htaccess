@@ -15,6 +15,12 @@
     RewriteCond %{REQUEST_URI} !^/diagnostico/
     RewriteRule ^(.*)$ /diagnostico/$1 [L]
 
+    # Rotas amigáveis para o curso De Inteligente a Indispensável
+    RewriteRule ^cursos/deinteligenteaindispens[aá]vel/?$ /cursos/deinteligenteaindispensavel/index.html [L,NC]
+    RewriteRule ^cursos/deinteligenteaindispens[aá]vel/obrigado/?$ /cursos/deinteligenteaindispensavel/obrigado/index.html [L,NC]
+    RewriteRule ^cursos/de-inteligente-a-indispensavel/?$ /cursos/deinteligenteaindispensavel/index.html [L,NC]
+    RewriteRule ^cursos/de-inteligente-a-indispensavel/obrigado/?$ /cursos/deinteligenteaindispensavel/obrigado/index.html [L,NC]
+
     # Força HTTPS
     RewriteCond %{HTTPS} off
     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
