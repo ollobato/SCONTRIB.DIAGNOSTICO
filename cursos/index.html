@@ -1,0 +1,1180 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Supercontribuidor IA — O método para transformar profissionais em pessoas capazes de gerar mais resultados, liderar entregas e aumentar seu valor com inteligência artificial.">
+  <title>Supercontribuidor IA | O método para transformar profissionais com IA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== DESIGN TOKENS ===== */
+    :root {
+      --bg: #03020d;
+      --bg-surface: #070519;
+      --surface: rgba(11, 8, 38, 0.65);
+      --surface-strong: rgba(16, 12, 54, 0.94);
+
+      --text: #f1f5f9;
+      --text-muted: #cbd5e1;
+      --text-dim: #94a3b8;
+
+      --cyan: #00f0ff;
+      --magenta: #ff007f;
+      --lime: #39ff14;
+      --yellow: #ffea00;
+      --orange: #ff6b35;
+
+      --glow-cyan: 0 0 20px rgba(0,240,255,0.35);
+      --glow-magenta: 0 0 20px rgba(255,0,127,0.35);
+      --glow-lime: 0 0 20px rgba(57,255,20,0.3);
+
+      --border-cyan: rgba(0,240,255,0.25);
+      --border-magenta: rgba(255,0,127,0.25);
+
+      --radius: 18px;
+      --max-w: 1140px;
+    }
+
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    a { color: inherit; text-decoration: none; }
+
+    body {
+      min-width: 320px;
+      color: var(--text);
+      background: var(--bg);
+      background-image:
+        radial-gradient(circle at 8% 15%, rgba(255,0,127,0.07), transparent 38rem),
+        radial-gradient(circle at 92% 85%, rgba(0,240,255,0.07), transparent 42rem);
+      font-family: 'Outfit', sans-serif;
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+
+    /* Grid futurista de fundo */
+    .grid-bg {
+      position: fixed; inset: 0; z-index: -10; pointer-events: none;
+      background-size: 56px 56px;
+      background-image:
+        linear-gradient(rgba(0,240,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,240,255,0.018) 1px, transparent 1px);
+      mask-image: radial-gradient(circle at center, black 35%, transparent 85%);
+    }
+
+    .wrap { width: min(var(--max-w), calc(100% - 36px)); margin: 0 auto; }
+
+    h1, h2, h3 {
+      font-family: 'Orbitron', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+    }
+
+    /* ===== ANIMAÇÕES NEUROCIENTÍFICAS ===== */
+    /* Shimmer: ativa sistema de recompensa dopaminérgico via movimento periférico */
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 0.5; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.15); }
+    }
+
+    @keyframes glow-breathe {
+      0%, 100% { box-shadow: 0 0 12px rgba(0,240,255,0.15); }
+      50% { box-shadow: 0 0 28px rgba(0,240,255,0.4); }
+    }
+
+    @keyframes scan-line {
+      0% { top: -2px; }
+      100% { top: 100%; }
+    }
+
+    @keyframes count-urgency {
+      0%, 100% { color: var(--magenta); }
+      50% { color: var(--yellow); }
+    }
+
+    /* ===== HEADER (Fixo, Compacto) ===== */
+    .header {
+      position: sticky; top: 0; z-index: 50;
+      border-bottom: 1px solid rgba(0,240,255,0.12);
+      background: rgba(3,2,13,0.88);
+      backdrop-filter: blur(14px);
+    }
+
+    .header-inner {
+      display: flex; min-height: 64px;
+      align-items: center; justify-content: space-between; gap: 16px;
+    }
+
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900; font-size: 17px;
+      letter-spacing: 0.04em; text-transform: uppercase;
+    }
+
+    .logo-icon {
+      display: grid; width: 38px; height: 38px; place-items: center;
+      border: 2px solid var(--cyan); border-radius: 9px;
+      color: var(--cyan); background: rgba(0,240,255,0.05);
+      box-shadow: var(--glow-cyan); font-size: 14px;
+    }
+
+    .logo span { color: var(--magenta); text-shadow: 0 0 8px rgba(255,0,127,0.2); }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 22px;
+      font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .nav-links a:hover { color: var(--cyan); text-shadow: 0 0 6px rgba(0,240,255,0.5); }
+
+    /* ===== BOTÕES ===== */
+    .btn {
+      display: inline-flex; min-height: 46px; align-items: center; justify-content: center;
+      border: 1px solid var(--cyan); border-radius: 10px; padding: 0 22px;
+      color: #fff; background: rgba(0,240,255,0.07);
+      box-shadow: var(--glow-cyan);
+      font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.07em;
+      transition: all 180ms ease; cursor: pointer;
+    }
+    .btn:hover { transform: translateY(-2px); background: var(--cyan); color: var(--bg); box-shadow: 0 0 30px rgba(0,240,255,0.55); }
+
+    .btn.cta {
+      border-color: var(--magenta);
+      background: linear-gradient(135deg, rgba(255,0,127,0.18), rgba(255,0,127,0.75));
+      box-shadow: var(--glow-magenta);
+      /* Shimmer sutil para captura de atenção periférica (neurociência: detecção de movimento pré-consciente) */
+      background-size: 200% 100%;
+      animation: shimmer 3s ease-in-out infinite;
+    }
+    .btn.cta:hover { background: var(--magenta); color: #fff; box-shadow: 0 0 35px rgba(255,0,127,0.6); animation: none; }
+
+    /* ===== TAG DE STATUS (Pattern Interrupt visual) ===== */
+    .tag {
+      display: inline-flex; align-items: center; gap: 7px;
+      border: 1px solid var(--border-magenta); border-radius: 30px;
+      padding: 5px 14px; background: rgba(255,0,127,0.05);
+      color: var(--magenta); font-family: 'Orbitron', sans-serif;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .tag::before {
+      content: ""; width: 7px; height: 7px; border-radius: 50%;
+      background: var(--magenta); box-shadow: 0 0 8px var(--magenta);
+      animation: pulse-dot 1.6s infinite;
+    }
+
+    /* ===== HERO SECTION ===== */
+    /* Neurociência: Tempo de captura de atenção < 2.6s. Hero compacto com contraste máximo. */
+    .hero {
+      padding: 56px 0 70px;
+      min-height: calc(100vh - 64px);
+      display: flex; align-items: center;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+      align-items: center; gap: 48px;
+    }
+
+    .hero h1 {
+      font-size: clamp(34px, 4.2vw, 62px);
+      font-weight: 900; line-height: 0.95; margin: 16px 0;
+    }
+    .hero h1 strong { color: var(--cyan); text-shadow: var(--glow-cyan); }
+    .hero h1 em {
+      color: var(--magenta); text-shadow: var(--glow-magenta);
+      font-style: normal;
+    }
+
+    .hero-sub {
+      font-size: clamp(15px, 1.7vw, 19px); font-weight: 500;
+      line-height: 1.45; color: var(--text-muted); margin-bottom: 24px;
+    }
+    .hero-sub strong { color: var(--yellow); text-shadow: 0 0 6px rgba(255,234,0,0.3); }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+
+    /* Micro-prova: Âncora numérica para Neocórtex racional */
+    .proof-anchor {
+      display: flex; gap: 20px; margin-top: 8px;
+    }
+    .proof-stat {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 10px 16px;
+      border: 1px solid rgba(0,240,255,0.12); border-radius: 10px;
+      background: rgba(11,8,38,0.35);
+    }
+    .proof-stat .num {
+      font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 900;
+      color: var(--cyan); text-shadow: var(--glow-cyan);
+    }
+    .proof-stat .lbl {
+      font-size: 10px; font-weight: 700; color: var(--text-dim);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px;
+    }
+
+    /* Painel CSS (Dashboard de Diagnóstico) */
+    .dash-panel {
+      position: relative;
+      border: 1px solid var(--border-cyan); border-radius: var(--radius);
+      padding: 24px; background: rgba(9,6,26,0.82);
+      box-shadow: var(--glow-cyan), inset 0 0 30px rgba(0,240,255,0.02);
+      backdrop-filter: blur(8px);
+    }
+    .dash-panel::before {
+      position: absolute; top: -1px; right: 24px;
+      width: 70px; height: 2px; content: "";
+      background: var(--magenta); box-shadow: var(--glow-magenta);
+    }
+    /* Scan-line sutil para efeito CRT / techy (ativa curiosidade) */
+    .dash-panel::after {
+      content: ""; position: absolute; left: 0; top: -2px;
+      width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      opacity: 0.3;
+      animation: scan-line 4s linear infinite;
+    }
+
+    .dash-head {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 18px; border-bottom: 1px solid rgba(0,240,255,0.08); padding-bottom: 10px;
+    }
+    .dash-label {
+      font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700;
+      color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em;
+    }
+
+    .bar-chart { display: grid; gap: 12px; }
+    .chart-row { display: grid; grid-template-columns: 76px 1fr 40px; align-items: center; gap: 10px; }
+    .chart-lbl { font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700; color: var(--text-muted); }
+    .bar-bg {
+      height: 10px; background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden;
+    }
+    .bar-fill { height: 100%; border-radius: 99px; transition: width 1.2s ease-out; }
+    .bar-fill.cy { background: linear-gradient(90deg, transparent, var(--cyan)); box-shadow: 0 0 8px var(--cyan); }
+    .bar-fill.mg { background: linear-gradient(90deg, transparent, var(--magenta)); box-shadow: 0 0 8px var(--magenta); }
+    .bar-fill.lm { background: linear-gradient(90deg, transparent, var(--lime)); box-shadow: 0 0 8px var(--lime); }
+    .chart-val { font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 900; text-align: right; }
+    .chart-val.cy { color: var(--cyan); }
+    .chart-val.mg { color: var(--magenta); }
+    .chart-val.lm { color: var(--lime); }
+
+    .dash-alert {
+      margin-top: 16px; padding: 10px 14px;
+      border: 1px solid rgba(255,234,0,0.2); border-radius: 10px;
+      background: rgba(255,234,0,0.025); color: var(--yellow);
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.04em; text-align: center;
+    }
+
+
+
+    /* ===== CARROSSEL DE NOTÍCIAS NO HERO ===== */
+    @keyframes news-slide {
+      0%, 16% { transform: translateY(0); }
+      20%, 36% { transform: translateY(-20%); }
+      40%, 56% { transform: translateY(-40%); }
+      60%, 76% { transform: translateY(-60%); }
+      80%, 96% { transform: translateY(-80%); }
+      100% { transform: translateY(0); }
+    }
+
+    .news-carousel {
+      position: relative;
+      height: 310px;
+      overflow: hidden;
+      border-radius: 14px;
+    }
+
+    .news-track {
+      display: flex;
+      flex-direction: column;
+      height: 500%;
+      animation: news-slide 22s ease-in-out infinite;
+    }
+
+    .news-carousel:hover .news-track { animation-play-state: paused; }
+
+    .news-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 310px;
+      padding: 18px 16px;
+      border: 1px solid rgba(0,240,255,0.12);
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(0,240,255,0.025), rgba(255,0,127,0.035));
+      transition: all 180ms ease;
+    }
+
+    .news-card:hover {
+      border-color: var(--cyan);
+      box-shadow: var(--glow-cyan);
+      transform: translateY(-2px);
+    }
+
+    .news-source {
+      display: inline-flex;
+      width: fit-content;
+      margin-bottom: 12px;
+      padding: 4px 10px;
+      border: 1px solid rgba(255,0,127,0.25);
+      border-radius: 999px;
+      color: var(--magenta);
+      background: rgba(255,0,127,0.04);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .news-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1.18;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .news-title span {
+      color: var(--cyan);
+      text-shadow: var(--glow-cyan);
+    }
+
+    .news-foot {
+      margin-top: 16px;
+      color: var(--yellow);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .news-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 16px;
+    }
+
+    .news-dots span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--cyan);
+      opacity: 0.35;
+      box-shadow: var(--glow-cyan);
+    }
+
+    /* ===== SEÇÕES COMUNS ===== */
+    .section { padding: 64px 0; position: relative; }
+
+    .sec-title {
+      font-size: clamp(24px, 3.5vw, 42px); line-height: 1.08;
+      font-weight: 900; margin-bottom: 12px;
+    }
+    .sec-title span { color: var(--cyan); text-shadow: var(--glow-cyan); }
+    .sec-title strong { color: var(--magenta); text-shadow: var(--glow-magenta); }
+
+    .sec-desc { font-size: 16px; color: var(--text-muted); max-width: 780px; margin-bottom: 28px; }
+
+    /* ===== 2. CONTRASTE DA DOR (Neurociência: Aversão à perda > Desejo de ganho 2:1) ===== */
+    .contrast-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+
+    .ccard {
+      border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius);
+      padding: 28px; background: rgba(11,8,38,0.3); position: relative; overflow: hidden;
+    }
+    .ccard.bad {
+      border-color: rgba(255,0,127,0.12);
+      background: linear-gradient(135deg, rgba(255,0,127,0.015) 0%, rgba(11,8,38,0.35) 100%);
+    }
+    .ccard.good {
+      border-color: rgba(0,240,255,0.18);
+      background: linear-gradient(135deg, rgba(0,240,255,0.02) 0%, rgba(11,8,38,0.45) 100%);
+      box-shadow: inset 0 0 24px rgba(0,240,255,0.025);
+    }
+
+    .cbadge {
+      display: inline-block; font-family: 'Orbitron', sans-serif;
+      font-size: 9px; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 5px; margin-bottom: 16px;
+    }
+    .ccard.bad .cbadge { background: rgba(255,0,127,0.12); color: var(--magenta); border: 1px solid rgba(255,0,127,0.25); }
+    .ccard.good .cbadge { background: rgba(0,240,255,0.12); color: var(--cyan); border: 1px solid rgba(0,240,255,0.25); box-shadow: var(--glow-cyan); }
+
+    .clist { list-style: none; display: grid; gap: 10px; }
+    .clist li { position: relative; padding-left: 24px; font-size: 14px; line-height: 1.5; }
+    .clist li::before { position: absolute; left: 0; top: 3px; font-size: 13px; font-weight: 900; }
+    .ccard.bad .clist li::before { content: "✕"; color: var(--magenta); }
+    .ccard.good .clist li::before { content: "✓"; color: var(--cyan); text-shadow: var(--glow-cyan); }
+
+    /* Frase de impacto — Ancoragem emocional forte */
+    .impact-line {
+      display: flex; align-items: center; justify-content: center; gap: 14px;
+      border: 1px solid rgba(255,234,0,0.18); border-radius: 10px;
+      padding: 12px 16px; margin-top: 20px;
+      background: rgba(255,234,0,0.02); color: var(--yellow);
+      font-size: 14px; font-weight: 700; text-align: center;
+      letter-spacing: 0.03em;
+    }
+    .resolve-icon {
+      flex: 0 0 46px; width: 46px; height: 46px;
+      filter: drop-shadow(0 0 10px rgba(0,240,255,0.35));
+    }
+
+    /* ===== 3. INIMIGO COMUM (Neurociência: In-Group Bias — uni-los contra o vilão) ===== */
+    .pain-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: center; }
+
+    .pain-card {
+      border: 1px solid rgba(255,0,127,0.18); border-radius: var(--radius);
+      padding: 28px; background: rgba(5,3,16,0.88); box-shadow: var(--glow-magenta);
+      position: relative;
+    }
+    .pain-card::before {
+      position: absolute; top: 8px; left: 8px;
+      font-family: 'Orbitron', sans-serif; font-size: 32px; font-weight: 900;
+      color: rgba(255,0,127,0.04); content: "ALERTA";
+    }
+    .pain-card h3 { color: var(--magenta); font-size: 20px; margin-bottom: 12px; }
+
+    .highlight-quote {
+      border-left: 3px solid var(--magenta); padding-left: 16px;
+      margin-top: 16px; font-weight: 700; font-size: 15px; line-height: 1.45;
+    }
+
+    /* Terminal de alertas (lado direito) */
+    .alert-terminal {
+      border: 1px solid var(--border-magenta); border-radius: var(--radius);
+      padding: 20px; background: rgba(9,6,26,0.8); box-shadow: var(--glow-magenta);
+    }
+    .alert-terminal p {
+      font-family: Consolas, Monaco, monospace; font-size: 12px; margin-bottom: 8px;
+      color: var(--text-dim);
+    }
+    .alert-terminal p:last-child { margin-bottom: 0; }
+    .alert-terminal p.critical { color: var(--magenta); font-weight: 700; }
+    .alert-terminal .hl { border-left: 2px solid var(--magenta); padding-left: 8px; }
+
+    /* ===== 4. MÉTODO A.C.E.L.E.R.A. (Neurociência: Fluência Cognitiva — passos claros reduzem cortisol) ===== */
+    .timeline {
+      margin-top: 24px; display: grid; gap: 6px; position: relative;
+    }
+    .timeline::before {
+      position: absolute; left: 24px; top: 12px; bottom: 12px;
+      width: 2px; content: "";
+      background: linear-gradient(180deg, var(--cyan) 0%, var(--magenta) 50%, var(--lime) 100%);
+    }
+
+    .step {
+      display: grid; grid-template-columns: 48px 1fr;
+      gap: 14px; border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 12px; padding: 10px 16px;
+      background: rgba(11,8,38,0.2);
+      transition: all 200ms ease;
+    }
+    .step:hover {
+      border-color: rgba(0,240,255,0.2); background: rgba(11,8,38,0.4);
+      transform: translateX(4px);
+    }
+
+    .step-icon {
+      display: grid; width: 48px; height: 48px; place-items: center;
+      border: 2px solid var(--cyan); border-radius: 10px;
+      color: var(--cyan); background: rgba(0,240,255,0.04);
+      box-shadow: var(--glow-cyan);
+      font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 900;
+      z-index: 2;
+    }
+    .step:nth-child(even) .step-icon {
+      border-color: var(--magenta); color: var(--magenta);
+      background: rgba(255,0,127,0.04); box-shadow: var(--glow-magenta);
+    }
+    .step:nth-child(7) .step-icon {
+      border-color: var(--lime); color: var(--lime);
+      background: rgba(57,255,20,0.04); box-shadow: var(--glow-lime);
+    }
+
+    .step-body h3 { font-size: 15px; margin-bottom: 2px; }
+    .step-body p { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+    /* ===== 5. ENTREGÁVEIS / DOSSIÊ (Neurociência: Efeito Dotação — sentir posse antes de pagar) ===== */
+    .dossier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 28px; }
+
+    .dcard {
+      border: 1px solid rgba(0,240,255,0.08); border-radius: var(--radius);
+      padding: 28px; background: rgba(7,5,22,0.82);
+      box-shadow: inset 0 0 16px rgba(0,240,255,0.015);
+      transition: all 220ms ease;
+    }
+    .dcard:hover { border-color: var(--cyan); box-shadow: var(--glow-cyan); transform: translateY(-4px); }
+    .dcard:nth-child(2) { border-color: rgba(255,0,127,0.08); }
+    .dcard:nth-child(2):hover { border-color: var(--magenta); box-shadow: var(--glow-magenta); }
+    .dcard:nth-child(3) { border-color: rgba(57,255,20,0.08); }
+    .dcard:nth-child(3):hover { border-color: var(--lime); box-shadow: var(--glow-lime); }
+
+    .dcard-tag {
+      display: inline-flex; font-family: 'Orbitron', sans-serif;
+      font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 24px; margin-bottom: 16px;
+    }
+    .dcard:nth-child(1) .dcard-tag { background: rgba(0,240,255,0.08); color: var(--cyan); border: 1px solid rgba(0,240,255,0.2); }
+    .dcard:nth-child(2) .dcard-tag { background: rgba(255,0,127,0.08); color: var(--magenta); border: 1px solid rgba(255,0,127,0.2); }
+    .dcard:nth-child(3) .dcard-tag { background: rgba(57,255,20,0.08); color: var(--lime); border: 1px solid rgba(57,255,20,0.2); }
+
+    .dcard h3 { font-size: 18px; margin-bottom: 8px; }
+    .dcard p { font-size: 14px; color: var(--text-muted); }
+
+    /* ===== 6. ESCADA DE MATURIDADE (Neurociência: Auto-categorização ativa sistema de identidade) ===== */
+    .maturity-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.8fr); gap: 36px; align-items: center; }
+
+    .stairs { display: grid; gap: 8px; }
+    .stair {
+      display: grid; grid-template-columns: 72px 1fr; align-items: center; gap: 14px;
+      border: 1px solid rgba(255,255,255,0.04); border-radius: 10px;
+      padding: 12px 16px; background: rgba(11,8,38,0.2); transition: all 180ms ease;
+    }
+    .stair.target {
+      border-color: var(--cyan); background: rgba(0,240,255,0.04);
+      box-shadow: inset 0 0 16px rgba(0,240,255,0.04);
+      animation: glow-breathe 3s ease-in-out infinite;
+    }
+    .stair:hover { border-color: var(--magenta); background: rgba(255,0,127,0.02); transform: scale(1.015); }
+
+    .stair-lv {
+      font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 900;
+      color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .stair.target .stair-lv { color: var(--cyan); text-shadow: var(--glow-cyan); }
+    .stair-info h4 { margin: 0 0 2px; font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; }
+    .stair-info p { margin: 0; font-size: 12px; color: var(--text-muted); }
+
+    .target-card {
+      border: 1px solid var(--border-cyan); border-radius: var(--radius);
+      padding: 24px; background: rgba(7,5,22,0.78); box-shadow: var(--glow-cyan);
+      position: relative;
+    }
+    .target-card::after {
+      position: absolute; top: 12px; right: 12px;
+      font-family: 'Orbitron', sans-serif; font-size: 8px; font-weight: 900;
+      letter-spacing: 0.1em; color: var(--cyan); content: "TARGET";
+      text-shadow: var(--glow-cyan);
+    }
+    .target-card h4 { font-family: 'Orbitron', sans-serif; font-size: 14px; margin-bottom: 8px; color: var(--cyan); }
+    .target-card p { font-size: 14px; color: var(--text-muted); }
+
+    /* ===== 7. ROI TERMINAL (Neurociência: Ancoragem numérica forte → Neocórtex aprova) ===== */
+    .terminal {
+      border: 1px solid var(--lime); border-radius: var(--radius);
+      background: #020207; box-shadow: 0 0 30px rgba(57,255,20,0.06); overflow: hidden;
+      font-family: Consolas, Monaco, monospace;
+    }
+    .terminal-bar {
+      display: flex; align-items: center; gap: 5px;
+      border-bottom: 1px solid rgba(57,255,20,0.12); padding: 10px 20px; background: #040410;
+    }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--lime); }
+    .dot.y { background: var(--yellow); }
+    .dot.p { background: var(--magenta); }
+    .terminal-ttl {
+      font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700;
+      color: var(--lime); text-transform: uppercase; letter-spacing: 0.12em; margin-left: 6px;
+    }
+    .terminal-body { padding: 24px; }
+    .tline { font-size: 14px; margin-bottom: 10px; color: #fff; }
+    .tline strong { color: var(--lime); text-shadow: 0 0 6px rgba(57,255,20,0.35); }
+
+    .roi-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+      margin-top: 20px; border-top: 1px dashed rgba(57,255,20,0.18); padding-top: 20px;
+    }
+    .roi-box {
+      border: 1px dashed rgba(57,255,20,0.15); border-radius: 10px;
+      padding: 14px; text-align: center;
+    }
+    .roi-num {
+      font-size: clamp(24px, 3.5vw, 36px); font-weight: 900;
+      color: var(--lime); text-shadow: 0 0 8px rgba(57,255,20,0.25);
+    }
+    .roi-lbl { font-size: 10px; color: var(--text-dim); text-transform: uppercase; margin-top: 4px; letter-spacing: 0.04em; }
+
+    /* ===== 8. EMENTA (Neurociência: Clareza reduz ansiedade decisória) ===== */
+    .syl-wrap {
+      overflow-x: auto; border: 1px solid var(--border-cyan);
+      border-radius: var(--radius); background: rgba(3,2,12,0.78); box-shadow: var(--glow-cyan);
+    }
+    .syl-table { width: 100%; border-collapse: collapse; min-width: 640px; table-layout: fixed; }
+    .syl-table th, .syl-table td { padding: 12px 10px; text-align: left; border-bottom: 1px solid rgba(0,240,255,0.06); }
+    .syl-table th:nth-child(1), .syl-table td:nth-child(1) { width: 64px; }
+    .syl-table th:nth-child(2), .syl-table td:nth-child(2) { width: 25%; }
+    .syl-table th:nth-child(4), .syl-table td:nth-child(4) { width: 22%; }
+    .syl-table th {
+      font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 900;
+      color: var(--cyan); background: rgba(0,240,255,0.03);
+      text-transform: uppercase; letter-spacing: 0.08em;
+    }
+    .syl-table td { font-size: 14px; }
+    .syl-table tr:hover td { background: rgba(0,240,255,0.012); }
+    .syl-table td strong { font-family: 'Orbitron', sans-serif; color: var(--magenta); font-size: 13px; }
+
+    /* ===== 9. CTA FINAL (Neurociência: Urgência + Eliminação de risco → Sistema Límbico desbloqueado) ===== */
+    .cta-box {
+      border: 1px solid var(--border-magenta); border-radius: 28px;
+      padding: 36px; background: linear-gradient(135deg, rgba(255,0,127,0.02) 0%, rgba(9,6,26,0.75) 100%);
+      box-shadow: var(--glow-magenta);
+      display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 32px; align-items: center;
+    }
+
+    .warranty-tag {
+      display: inline-flex; align-items: center; gap: 8px; margin-bottom: 12px;
+      color: var(--yellow); font-family: 'Orbitron', sans-serif;
+      font-size: 11px; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .warranty-tag::before { content: "⚡"; font-size: 16px; }
+
+    /* Urgency counter (Neurociência: Escassez temporal ativa amígdala → ação imediata) */
+    .urgency-strip {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      margin-top: 14px; padding: 8px 14px;
+      border: 1px solid rgba(255,0,127,0.2); border-radius: 8px;
+      background: rgba(255,0,127,0.03);
+      font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700;
+      color: var(--magenta); text-transform: uppercase; letter-spacing: 0.08em;
+      animation: count-urgency 2s ease-in-out infinite;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      border-top: 1px solid rgba(0,240,255,0.08); padding: 24px 0;
+      font-size: 13px; color: var(--text-dim); background: rgba(2,1,8,0.88);
+    }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+
+    /* ===== MODAL ===== */
+    .modal {
+      position: fixed; inset: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 200ms ease;
+    }
+    .modal.active { opacity: 1; pointer-events: auto; }
+    .modal-bg { position: absolute; inset: 0; background: rgba(3,2,12,0.92); backdrop-filter: blur(10px); }
+    .modal-box {
+      position: relative; z-index: 2; width: min(500px, 90vw);
+      border: 1px solid var(--cyan); border-radius: var(--radius);
+      padding: 32px; background: var(--surface-strong); box-shadow: var(--glow-cyan); text-align: center;
+    }
+    .modal-x {
+      position: absolute; top: 16px; right: 16px; width: 30px; height: 30px;
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 50%;
+      color: #fff; background: transparent; font-size: 14px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .modal-x:hover { border-color: var(--cyan); color: var(--cyan); }
+
+    .form-group { margin-bottom: 12px; text-align: left; }
+    .form-input {
+      width: 100%; padding: 14px; border: 1px solid rgba(0,240,255,0.2);
+      border-radius: 8px; background: rgba(3,2,12,0.75);
+      color: #fff; font-size: 15px; font-family: inherit;
+    }
+    .form-input:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 8px rgba(0,240,255,0.2); }
+
+    /* ===== RESPONSIVIDADE ===== */
+    @media (max-width: 980px) {
+      .nav-links { display: none; }
+      .hero-grid, .contrast-grid, .pain-grid, .maturity-grid, .cta-box { grid-template-columns: 1fr; }
+      .dossier-grid { grid-template-columns: 1fr; }
+      .proof-anchor { flex-wrap: wrap; }
+      .timeline::before { left: 18px; }
+      .step { grid-template-columns: 40px 1fr; gap: 10px; padding: 8px 12px; }
+      .step-icon { width: 40px; height: 40px; font-size: 15px; }
+      .roi-stats { grid-template-columns: 1fr; gap: 10px; }
+    }
+
+    @media (max-width: 680px) {
+      .wrap { width: min(100% - 28px, var(--max-w)); }
+      .section { padding: 38px 0; text-align: center; }
+      .hero { min-height: auto; padding: 30px 0 42px; text-align: center; }
+      .hero-grid { gap: 26px; }
+      .hero h1 { font-size: clamp(26px, 9vw, 34px); line-height: 1.05; margin: 10px 0 14px; }
+      .hero-sub { font-size: 15px; margin-bottom: 18px; }
+      .hero-actions { justify-content: center; margin-bottom: 14px; }
+      .hero-actions .btn { width: 100%; max-width: 320px; min-height: 42px; padding: 0 14px; font-size: 10px; }
+      .proof-anchor { justify-content: center; gap: 10px; }
+      .proof-stat { width: calc(50% - 5px); padding: 9px 8px; }
+      .proof-stat .num { font-size: 18px; }
+      .dash-panel { padding: 18px; }
+      .news-carousel, .news-card { min-height: 250px; height: 250px; }
+      .news-title { font-size: 16px; }
+      .sec-title { font-size: clamp(22px, 8vw, 30px); }
+      .sec-desc { margin-left: auto; margin-right: auto; font-size: 15px; }
+      .ccard, .pain-card, .cta-box, .target-card, .terminal-body { padding: 18px; }
+      .clist { text-align: left; }
+      .pain-grid, .maturity-grid { gap: 24px; }
+      .impact-line { flex-direction: column; padding: 16px; }
+      .timeline::before { display: none; }
+      .step { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 8px; padding: 14px; }
+      .step:hover { transform: none; }
+      .stair { grid-template-columns: 1fr; text-align: center; gap: 4px; }
+      .syl-wrap { margin-inline: -6px; }
+      .syl-table { min-width: 560px; }
+      .syl-table th, .syl-table td { padding: 10px 8px; font-size: 12px; }
+      .logo { font-size: 14px; }
+      .header .btn { min-height: 38px; padding: 0 14px; font-size: 10px; }
+      .header-inner { justify-content: center; flex-wrap: wrap; padding: 10px 0; }
+      .footer-inner { justify-content: center; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+
+  <!-- ====== HEADER ====== -->
+  <header class="header">
+    <div class="wrap header-inner">
+      <a class="logo" href="/" aria-label="Supercontribuidor IA">
+        <span class="logo-icon">IA</span>
+        Supercontribuidor <span>IA</span>
+      </a>
+      <nav class="nav-links" aria-label="Menu">
+        <a href="/">Início</a>
+        <a href="/cursos/" style="color: var(--cyan); text-shadow: 0 0 8px rgba(0,240,255,0.4); border-bottom: 2px solid var(--cyan); padding-bottom: 2px;">Cursos</a>
+        <a href="#dor">A Dor</a>
+        <a href="#metodo">O Método</a>
+        <a href="#entregaveis">Entregáveis</a>
+        <a href="#ementa">Ementa</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <a class="btn" href="/diagnostico/">Diagnóstico Gratuito</a>
+        <a class="btn cta" href="https://pay.kiwify.com.br/iS4ACf1" target="_blank" rel="noopener noreferrer">Garantir Vaga</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ====== 1. HERO — PATTERN INTERRUPT + OPEN LOOP ====== -->
+    <!--
+      NEUROCIÊNCIA: Pattern Interrupt (quebra de expectativa) + Open Loop (Efeito Zeigarnik: o cérebro não
+      fecha o loop até ler a solução). A headline abre uma lacuna emocional que só se fecha com a inscrição.
+      Ancoragem numérica (432h) ativa Neocórtex para justificação racional pós-emocional.
+    -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <h1>De profissional inteligente a <strong>profissional indispensável.</strong></h1>
+          <p class="hero-sub">Use a inteligência artificial para ir além da produção de textos. Torne-se um profissional capaz de gerar resultados, liderar entregas e aumentar seu valor para sua empresa ou para o seu negócio.</p>
+          <div class="hero-actions">
+            <a class="btn cta" href="https://pay.kiwify.com.br/iS4ACf1" target="_blank" rel="noopener noreferrer">Garantir Minha Vaga (10x R$ 9,70)</a>
+            <a class="btn" href="/diagnostico/">Fazer Diagnóstico Gratuito ↗</a>
+            <a class="btn" href="#ementa">Ver Grade do Treinamento</a>
+          </div>
+          <div class="proof-anchor">
+            <div class="proof-stat"><span class="num">10</span><span class="lbl">Aulas Práticas</span></div>
+            <div class="proof-stat"><span class="num">7</span><span class="lbl">Etapas do Método</span></div>
+            <div class="proof-stat"><span class="num">432h</span><span class="lbl">Economia Anual</span></div>
+            <div class="proof-stat"><span class="num">100%</span><span class="lbl">Garantia 7 Dias</span></div>
+          </div>
+        </div>
+
+        <!-- Carrossel de Notícias -->
+        <div class="dash-panel">
+          <div class="dash-head">
+            <span class="dash-label">Radar // Mercado de Trabalho</span>
+            <span class="dash-label" style="color: var(--cyan);">AO VIVO</span>
+          </div>
+          <div class="news-carousel" aria-label="Carrossel de notícias sobre inteligência artificial e mercado de trabalho">
+            <div class="news-track">
+              <a class="news-card" href="https://vocerh.abril.com.br/lideranca/ia-nao-vai-substituir-pessoas-mas-vai-expor-lideres-despreparados/" target="_blank" rel="noopener noreferrer">
+                <span class="news-source">Você RH</span>
+                <strong class="news-title">IA não vai substituir pessoas. Mas vai expor <span>profissionais despreparados.</span></strong>
+                <span class="news-foot">Clique para ler a notícia</span>
+              </a>
+              <a class="news-card" href="https://g1.globo.com/trabalho-e-carreira/noticia/2025/07/13/ia-pode-eliminar-ate-92-milhoes-de-empregos-mas-essas-profissoes-devem-sobreviver.ghtml" target="_blank" rel="noopener noreferrer">
+                <span class="news-source">G1</span>
+                <strong class="news-title">IA pode eliminar até <span>92 milhões de empregos.</span></strong>
+                <span class="news-foot">Clique para ler a notícia</span>
+              </a>
+              <a class="news-card" href="https://exame.com/inteligencia-artificial/demitido-pela-ia-as-funcoes-que-ja-estao-desaparecendo-nas-empresas/" target="_blank" rel="noopener noreferrer">
+                <span class="news-source">Exame</span>
+                <strong class="news-title">Funções já começam a desaparecer dentro das <span>empresas.</span></strong>
+                <span class="news-foot">Clique para ler a notícia</span>
+              </a>
+              <a class="news-card" href="https://www.bbc.com/portuguese/articles/c0qpp91xxk5o" target="_blank" rel="noopener noreferrer">
+                <span class="news-source">BBC News Brasil</span>
+                <strong class="news-title">Profissionais sem adaptação podem perder espaço nos <span>próximos anos.</span></strong>
+                <span class="news-foot">Clique para ler a notícia</span>
+              </a>
+              <a class="news-card" href="https://forbes.com.br/carreira/2026/02/ia-acelera-demissoes-globais-e-pressiona-mercado-de-trabalho/" target="_blank" rel="noopener noreferrer">
+                <span class="news-source">Forbes Brasil</span>
+                <strong class="news-title">IA acelera transformações e pressiona o <span>mercado global.</span></strong>
+                <span class="news-foot">Clique para ler a notícia</span>
+              </a>
+            </div>
+          </div>
+          <div class="news-dots" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="dash-alert">⚠ O diferencial não é usar IA. É gerar resultado com método.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== 2. CONTRASTE DOR / SOLUÇÃO — AVERSÃO À PERDA ====== -->
+    <!--
+      NEUROCIÊNCIA: O cérebro reptiliano processa decisões por contraste (Kahneman: perda pesa 2x mais
+      que ganho equivalente). O card ANTES ativa a amígdala (medo). O card DEPOIS ativa o nucleus accumbens
+      (recompensa). A justaposição elimina a ambiguidade decisória.
+    -->
+    <section id="dor" class="section">
+      <div class="wrap">
+        <span class="tag">Sua Realidade Atual vs. Seu Potencial</span>
+        <h2 class="sec-title">O Abismo entre <strong>Digitar Prompts</strong> e <span>Resolver Problemas de Negócio</span></h2>
+        <p class="sec-desc">Você não precisa de mais prompts soltos. Precisa de um método que transforme inteligência artificial em resultados consistentes.</p>
+        <div class="contrast-grid">
+          <div class="ccard bad">
+            <span class="cbadge">❌ Antes — O Ciclo do Improviso</span>
+            <ul class="clist">
+              <li><strong>Retrabalho infinito:</strong> Você cola prompts genéricos, a IA gera parágrafos artificiais. Seu gestor reconhece a escrita de máquina e manda refazer do zero.</li>
+              <li><strong>Alucinações perigosas:</strong> Dados estatísticos inventados pela IA entram em relatórios que embasam decisões milionárias. Ninguém conferiu.</li>
+              <li><strong>Bomba jurídica:</strong> CPFs, faturamentos e dados de clientes vazam involuntariamente em plataformas de IA públicas. A LGPD não perdoa.</li>
+              <li><strong>Invisibilidade profissional:</strong> Você produz volume. Mas quem apresenta, decide e recebe o crédito é sempre outra pessoa.</li>
+            </ul>
+          </div>
+          <div class="ccard good">
+            <span class="cbadge">✅ Depois — O Supercontribuidor IA</span>
+            <ul class="clist">
+              <li><strong>Entrega blindada:</strong> Relatórios de nível diretivo na primeira versão, construídos por blocos com rastreabilidade total de fontes.</li>
+              <li><strong>Zero alucinação:</strong> Cada número passa por triangulação cruzada com planilhas internas e bases de mercado verificadas antes de entrar no documento.</li>
+              <li><strong>LGPD nativa:</strong> Protocolo de anonimização sistemática aplicado automaticamente antes de qualquer dado tocar a interface da IA.</li>
+              <li><strong>Protagonismo técnico:</strong> Você não é quem digita, você é quem apresenta soluções.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="impact-line">
+          <svg class="resolve-icon" viewBox="0 0 64 64" role="img" aria-label="Ícone de resolubilidade">
+            <defs>
+              <linearGradient id="resolve-gradient" x1="8" y1="8" x2="56" y2="56">
+                <stop stop-color="#00f0ff"/>
+                <stop offset="1" stop-color="#39ff14"/>
+              </linearGradient>
+            </defs>
+            <circle cx="32" cy="32" r="25" fill="rgba(0,240,255,0.08)" stroke="url(#resolve-gradient)" stroke-width="3"/>
+            <path d="M18 34l9 9 19-23" fill="none" stroke="#39ff14" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15 23h10M39 47h10M43 14l7 7" fill="none" stroke="#00f0ff" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+          <span>O futuro pertence a quem transforma a inteligência artificial em entregas melhores, decisões mais rápidas e resultados mais relevantes.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== 3. INIMIGO COMUM — IN-GROUP BIAS ====== -->
+    <!--
+      NEUROCIÊNCIA: Criar um "vilão externo" comum (o retrabalho operacional) ativa o In-Group Bias do
+      sistema límbico — o leitor se identifica com a tribo de quem sofre do mesmo problema e percebe
+      o treinamento como a "arma" do grupo para vencer o inimigo.
+    -->
+    <section class="section" style="background: rgba(5,3,16,0.35);">
+      <div class="wrap pain-grid">
+        <div class="pain-card">
+          <span class="tag" style="border-color: rgba(255,0,127,0.25);">Gargalo Identificado</span>
+          <h3>Mais ferramentas é igual a mais ruído.</h3>
+          <p style="color: var(--text-muted); font-size: 15px;">Sem método, a IA gera mais ruído. Com método, ela amplia sua capacidade de contribuir, resolver problemas e entregar resultados.</p>
+          <ul class="clist" style="margin-top: 12px;">
+            <li style="color: var(--text-muted);"><strong style="color: #fff;">Briefings vagos</strong> que forçam você a adivinhar o que a empresa realmente precisa resolver.</li>
+            <li style="color: var(--text-muted);"><strong style="color: #fff;">Reuniões intermináveis</strong> que terminam sem plano de ação, sem dono e sem prazo.</li>
+            <li style="color: var(--text-muted);"><strong style="color: #fff;">Pesquisas caóticas</strong> sem fontes rastreáveis, sem implicações de negócio, sem conclusão.</li>
+          </ul>
+          <div class="highlight-quote">
+            A virada de chave: Este treinamento não entrega comandos soltos. Ele instala um <em style="color: var(--cyan);">método de trabalho</em> para transformar inteligência artificial em produtividade, influência e impacto real.
+          </div>
+        </div>
+        <div class="alert-terminal">
+          <div class="dash-head" style="border-color: rgba(255,0,127,0.08);">
+            <span class="dash-label" style="color: var(--magenta);">Terminal // Alertas Operacionais</span>
+            <span class="dash-label" style="color: var(--magenta);">CRITICAL</span>
+          </div>
+          <p>! Vazamento de Contexto: Prompts genéricos detectados.</p>
+          <p class="hl">>> Consequência: 82% do tempo perdido revisando saídas artificiais.</p>
+          <p>! Risco LGPD: Dados corporativos expostos em 3 plataformas públicas.</p>
+          <p class="hl">>> Consequência: Exposição jurídica + perda de credibilidade interna.</p>
+          <p class="critical">>> Solução Requerida: Implementar Método A.C.E.L.E.R.A. imediatamente.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== 4. MÉTODO A.C.E.L.E.R.A. — FLUÊNCIA COGNITIVA ====== -->
+    <!--
+      NEUROCIÊNCIA: Fluência Cognitiva (Oppenheimer, 2008). Apresentar informação em etapas claras e
+      numeradas reduz a carga cognitiva do Neocórtex, diminui cortisol (ansiedade) e aumenta a percepção
+      de competência e facilidade do método. Cada letra vira um "checkpoint mental" que o cérebro processa
+      sem esforço.
+    -->
+    <section id="metodo" class="section">
+      <div class="wrap">
+        <span class="tag">Metodologia Proprietária</span>
+        <h2 class="sec-title">O Método <span>A.C.E.L.E.R.A.</span></h2>
+        <p class="sec-desc">7 passos para transformar inteligência artificial em melhores resultados.</p>
+        <div class="timeline">
+          <div class="step">
+            <span class="step-icon">A</span>
+            <div class="step-body">
+              <h3>Alinhar Contexto</h3>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-icon">C</span>
+            <div class="step-body">
+              <h3>Capturar Conhecimento</h3>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-icon">E</span>
+            <div class="step-body">
+              <h3>Estruturar Raciocínio</h3>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-icon">L</span>
+            <div class="step-body">
+              <h3>Levantar Opções</h3>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-icon">E</span>
+            <div class="step-body">
+              <h3>Executar com IA</h3>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-icon">R</span>
+            <div class="step-body">
+              <h3>Revisar com Rigor</h3>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-icon">A</span>
+            <div class="step-body">
+              <h3>Acionar Resultado</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== 5. ENTREGÁVEIS — EFEITO DOTAÇÃO ====== -->
+    <!--
+      NEUROCIÊNCIA: Efeito Dotação (Endowment Effect, Thaler 1980). Ao descrever os entregáveis como
+      "seus ativos", o leitor sente posse psicológica ANTES de pagar, ativando aversão à perda caso
+      decida não comprar. Ele sentiria que está "perdendo" algo que já é dele.
+    -->
+    <section id="entregaveis" class="section" style="background: rgba(5,3,16,0.35);">
+      <div class="wrap">
+        <span class="tag">Seus Ativos de Conclusão</span>
+        <h2 class="sec-title">Você Sai do Treinamento com <span>Habilidades Tangíveis</span> — Não com Prompts Soltos</h2>
+        <p class="sec-desc">Você conclui a jornada com entregas práticas que demonstram sua capacidade de usar IA para resolver problemas, organizar informações complexas e gerar impacto real.</p>
+        <div class="dossier-grid">
+          <div class="dcard">
+            <span class="dcard-tag">Documento</span>
+            <h3>01 // O Resultado</h3>
+            <p>Seu relatório estratégico, playbook ou plano tático — gerado por blocos, livre de jargões de IA, pronto para apresentação ao C-Level.</p>
+          </div>
+          <div class="dcard">
+            <span class="dcard-tag">Segurança</span>
+            <h3>02 // Checklist de Governança</h3>
+            <p>Protocolo documentado de anonimização LGPD, verificação de fontes e auditoria anti-alucinação. Sua blindagem jurídica.</p>
+          </div>
+          <div class="dcard">
+            <span class="dcard-tag">Indicador</span>
+            <h3>03 // Relatório de ROI</h3>
+            <p>Planilha com a economia real de tempo operacional (%) demonstrada matematicamente e projeção de impacto anual na carreira.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== 6. ESCADA DE MATURIDADE — AUTO-CATEGORIZAÇÃO ====== -->
+    <!--
+      NEUROCIÊNCIA: Auto-categorização (Tajfel & Turner, 1979). Apresentar uma hierarquia de níveis
+      ativa o sistema de identidade social do cérebro. O leitor se posiciona automaticamente e sente
+      uma tensão (gap entre onde está e onde quer estar) que só se resolve com a ação.
+    -->
+    <section class="section">
+      <div class="wrap maturity-grid">
+        <div>
+          <span class="tag">Posicionamento de Carreira</span>
+          <h2 class="sec-title">Em qual degrau você está na <span>Escada de Maturidade IA?</span></h2>
+          <p class="sec-desc">A maioria dos profissionais ainda usa IA apenas para escrever textos, resumos e e-mails. O treinamento foi desenhado para levar você ao nível de quem usa IA como alavanca de contribuição e resultado.</p>
+          <div class="target-card">
+            <h4>Alvo do Treinamento Essencial</h4>
+            <p>Consolidar você no <strong style="color: var(--cyan);">Nível 4: Supercontribuidor IA</strong> — onde você gera entregas complexas com autonomia, clareza, método e impacto mensurável.</p>
+          </div>
+        </div>
+        <div class="stairs">
+          <div class="stair">
+            <span class="stair-lv">Nível 5</span>
+            <div class="stair-info"><h4>Arquiteto de Contribuição</h4><p>Projeta sistemas e fluxos de IA que operam sozinhos para o time.</p></div>
+          </div>
+          <div class="stair target">
+            <span class="stair-lv">Nível 4</span>
+            <div class="stair-info"><h4>Supercontribuidor IA</h4><p>Entregas complexas com autonomia, governança e ROI mensurável.</p></div>
+          </div>
+          <div class="stair">
+            <span class="stair-lv">Nível 3</span>
+            <div class="stair-info"><h4>Analista Orquestrador</h4><p>Modela problemas básicos e direciona a IA no fluxo.</p></div>
+          </div>
+          <div class="stair">
+            <span class="stair-lv">Nível 2</span>
+            <div class="stair-info"><h4>Produtor Aumentado</h4><p>Ganho de velocidade, mas vítima de alucinações e retrabalho constante.</p></div>
+          </div>
+          <div class="stair">
+            <span class="stair-lv">Nível 1</span>
+            <div class="stair-info"><h4>Usuário Assistido</h4><p>Usa IA pontualmente como corretor ortográfico ou gerador de e-mails.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== 7. ROI MATEMÁTICO — ANCORAGEM NUMÉRICA ====== -->
+    <!--
+      NEUROCIÊNCIA: Ancoragem (Tversky & Kahneman, 1974). O primeiro número que o cérebro vê (432h)
+      se torna a referência inconsciente contra a qual o preço é comparado. 432h de capacidade
+      estratégica >> custo do treinamento. O Neocórtex racional encontra justificação lógica para a decisão
+      emocional que o Límbico já tomou.
+    -->
+    <section class="section">
+      <div class="wrap">
+        <div class="terminal">
+          <div class="terminal-bar">
+            <span class="dot"></span><span class="dot y"></span><span class="dot p"></span>
+            <span class="terminal-ttl">Analytic Terminal // ROI de Produtividade</span>
+          </div>
+          <div class="terminal-body">
+            <div class="tline">>> PERGUNTA CRÍTICA: <strong>Quanto custa continuar usando IA sem método?</strong></div>
+            <div class="tline">>> Se você economizar apenas <strong>9 horas/semana</strong> aplicando o Método A.C.E.L.E.R.A.:</div>
+            <div class="tline">>> Em 1 mês → <strong>36 horas</strong> de foco estratégico recuperadas.</div>
+            <div class="tline">>> Em 1 ano (48 semanas) → <strong>432 horas operacionais</strong> devolvidas.</div>
+            <div class="tline">>> Equivale a <strong>54 dias inteiros de trabalho</strong> para investir em crescimento, não em retrabalho.</div>
+            <div class="tline" style="color: var(--lime); margin-top: 6px;">>> O verdadeiro ganho está em transformar IA em contribuição real. A conta está feita.</div>
+            <div class="roi-stats">
+              <div class="roi-box"><div class="roi-num">9h</div><div class="roi-lbl">Salvas por Semana</div></div>
+              <div class="roi-box"><div class="roi-num">70%</div><div class="roi-lbl">Redução de Retrabalho</div></div>
+              <div class="roi-box"><div class="roi-num">432h</div><div class="roi-lbl">Capacidade Anual</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== 8. EMENTA — CLAREZA DECISÓRIA ====== -->
+    <!--
+      NEUROCIÊNCIA: Redução de Ambiguidade Decisória. Mostrar exatamente o que o aluno vai aprender aula
+      a aula reduz incerteza (cortisol) e aumenta confiança (serotonina). O leitor sente que "já viu o
+      caminho inteiro" e a decisão se torna segura.
+    -->
+    <section id="ementa" class="section" style="background: rgba(5,3,16,0.35);">
+      <div class="wrap">
+        <span class="tag">Cronograma Completo</span>
+        <h2 class="sec-title">Grade do Treinamento: <span>10 Aulas de Impacto</span></h2>
+        <p class="sec-desc">Uma jornada progressiva desenhada para construir cada competência sobre a anterior — do diagnóstico do gargalo ao dossiê final com ROI comprovado.</p>
+        <div class="syl-wrap">
+          <table class="syl-table">
+            <thead>
+              <tr><th>Aula</th><th>Tema</th><th>Habilidade-chave</th><th>Entregável</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>01</strong></td><td>Cargo vs. Fluxo de Valor</td><td>Transição de mentalidade e definição do projeto-laboratório</td><td>Definição do Laboratório</td></tr>
+              <tr><td><strong>02</strong></td><td>Canvas do Supercontribuidor</td><td>Diagnóstico visual do gargalo de negócio do fluxo</td><td>Canvas Preenchido</td></tr>
+              <tr><td><strong>03</strong></td><td>Briefing de Alta Definição</td><td>Pacote de Contexto Mínimo (PCM) e limites lógicos</td><td>Briefing Alinhado</td></tr>
+              <tr><td><strong>04</strong></td><td>Pesquisa Anti-Alucinação</td><td>Triangulação e validação crítica de fontes</td><td>Dossiê de Pesquisa</td></tr>
+              <tr><td><strong>05</strong></td><td>O Resultado</td><td>Redação por blocos, eliminação de clichês artificiais</td><td>Draft v1 do Relatório</td></tr>
+              <tr><td><strong>06</strong></td><td>Projeto como Assistente</td><td>Context pinning em Claude Projects e GPTs</td><td>Custom Assistant</td></tr>
+              <tr><td><strong>07</strong></td><td>Checklist de Segurança</td><td>Anonimização LGPD e auditoria anti-alucinação</td><td>Checklist Validação</td></tr>
+              <tr><td><strong>08</strong></td><td>Comunicação que Destrava</td><td>Framework SCQA para e-mails e pitches</td><td>E-mail SCQA + Pitch</td></tr>
+              <tr><td><strong>09</strong></td><td>Biblioteca de Prompts</td><td>Ativos intelectuais parametrizados e rituais</td><td>Biblioteca Pessoal</td></tr>
+              <tr><td><strong>10</strong></td><td>Projeto Final</td><td>Consolidação do Dossiê com métricas de impacto</td><td>Dossiê + ROI Final</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== 9. CTA FINAL + GARANTIA — ELIMINAÇÃO DE RISCO LÍMBICO ====== -->
+    <!--
+      NEUROCIÊNCIA: Eliminação de Risco Percebido. O sistema límbico bloqueia decisões quando detecta
+      possibilidade de perda financeira (amígdala). A garantia incondicional desativa esse alarme.
+      A escassez temporal (vagas limitadas) ativa o FOMO via sistema dopaminérgico, criando urgência
+      sem manipulação — o leitor sente que a janela de oportunidade é real e finita.
+    -->
+    <section class="section">
+      <div class="wrap">
+        <div class="cta-box">
+          <div>
+            <div class="warranty-tag">Garantia Incondicional de Produtividade</div>
+            <h2 class="sec-title">Risco Zero: <span>7 Dias de Garantia Total</span></h2>
+            <p style="font-size: 15px; color: var(--text-muted); line-height: 1.5;">Se em até 7 dias você aplicar o Método A.C.E.L.E.R.A. e não comprovar uma economia de pelo menos <strong style="color: var(--yellow);">5 horas de trabalho operacional</strong> na sua rotina, devolvemos 100% do seu investimento. Sem perguntas. Sem burocracia. O risco é inteiramente nosso.</p>
+          </div>
+          <div style="text-align: center;">
+            <div style="margin-bottom: 14px;">
+              <span style="font-family: 'Orbitron', sans-serif; font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; display: block;">Treinamento de 2 horas + Bônus</span>
+              <strong style="font-family: 'Orbitron', sans-serif; font-size: 32px; color: var(--lime); text-shadow: 0 0 16px rgba(57,255,20,0.4); display: block; margin: 4px 0;">10x de R$ 9,70</strong>
+              <small style="color: var(--text-muted); font-size: 13px;">ou R$ 97 à vista</small>
+            </div>
+            <a class="btn cta" href="https://pay.kiwify.com.br/iS4ACf1" target="_blank" rel="noopener noreferrer" style="min-height: 54px; font-size: 14px; padding: 0 32px; width: 100%;">Quero me tornar um Supercontribuidor IA</a>
+            <div class="urgency-strip">
+              ⏱ Turma de lançamento — vagas limitadas por lote
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <span>© 2026 <a href="/" style="color: var(--cyan); text-decoration: none;">Supercontribuidor IA</a> — Uma iniciativa <a href="https://elevaia.com.br" target="_blank" rel="noopener" style="color: var(--cyan); text-decoration: none;">Eleva Digital IA</a>.</span>
+      <span>Método de IA para profissionais que querem gerar mais resultados.</span>
+    </div>
+  </footer>
+
+  <script>
+    function openModal(id) { document.getElementById('modal-' + id).classList.add('active'); }
+    function closeModal(id) { document.getElementById('modal-' + id).classList.remove('active'); }
+    function handleSubmit(e, type) {
+      e.preventDefault();
+      alert('Solicitação recebida com sucesso! Verifique sua caixa de entrada.');
+      closeModal(type);
+    }
+
+    // Intersection Observer para animação de barras ao entrar no viewport
+    // (Neurociência: Movimento detectado pela visão periférica captura atenção pré-consciente)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.bar-fill').forEach(bar => {
+            const w = bar.style.width;
+            bar.style.width = '0%';
+            requestAnimationFrame(() => { bar.style.width = w; });
+          });
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('.bar-chart').forEach(chart => observer.observe(chart));
+  </script>
+</body>
+</html>
